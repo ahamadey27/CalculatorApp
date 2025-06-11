@@ -70,29 +70,7 @@ namespace CalculatorWeb.Pages
                 return;
             }
 
-            if (action == "convert")
-            {
-                if (Result.HasValue && !string.IsNullOrEmpty(SelectedCurrency) && _currencyApiServiceImpl != null)
-                {
-                    // Use the CurrencyApiService's HttpClient and ApiKey via a new method
-                    var rate = await _currencyApiServiceImpl.GetRateForCurrencyAsync(SelectedCurrency);
-                    if (rate.HasValue)
-                    {
-                        Result = Result * rate.Value;
-                        ErrorMessage = string.Empty;
-                    }
-                    else
-                    {
-                        ErrorMessage = "Could not fetch conversion rate.";
-                    }
-                }
-                else
-                {
-                    ErrorMessage = "No result to convert or no currency selected.";
-                }
-                return;
-            }
-
+            // Always calculate first
             try
             {
                 Result = Operator switch
@@ -109,11 +87,35 @@ namespace CalculatorWeb.Pages
             {
                 ErrorMessage = ex.Message; // Display specific error for division by zero
                 Result = null; // Clear result on error
+                return;
             }
             catch (Exception ex)
             {
                 ErrorMessage = $"An unexpected error occurred: {ex.Message}"; // Catch other unexpected errors
                 Result = null; // Clear result on error
+                return;
+            }
+
+            // If action is convert, perform conversion
+            if (action == "convert")
+            {
+                if (Result.HasValue && !string.IsNullOrEmpty(SelectedCurrency) && _currencyApiServiceImpl != null)
+                {
+                    var rate = await _currencyApiServiceImpl.GetRateForCurrencyAsync(SelectedCurrency);
+                    if (rate.HasValue)
+                    {
+                        Result = Result * rate.Value;
+                        ErrorMessage = string.Empty;
+                    }
+                    else
+                    {
+                        ErrorMessage = "Could not fetch conversion rate.";
+                    }
+                }
+                else
+                {
+                    ErrorMessage = "No result to convert or no currency selected.";
+                }
             }
         }
     }
