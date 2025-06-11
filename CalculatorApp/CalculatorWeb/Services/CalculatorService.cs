@@ -21,7 +21,8 @@ namespace CalculatorWeb.Services
 
         public decimal Multiply(decimal num1, decimal num2)
         {
-            throw new NotImplementedException("Multiply method not implemented.");
+            return num1 * num2;
+            //throw new NotImplementedException("Multiply method not implemented.");
         }
 
         public decimal Divide(decimal num1, decimal num2)

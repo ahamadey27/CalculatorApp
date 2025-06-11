@@ -33,6 +33,22 @@ namespace CalculatorWeb.Tests.Services
         }
 
         [Fact]
+        public void Multiply_MultiplyNumbers_ReturnsResults()
+        {
+            //Arrange
+            decimal num1 = 10.0m;
+            decimal num2 = 5.0m;
+            decimal expected = 50.0m;
+
+            //Act
+            decimal actual = calculatorService.Multiply(num1, num2);
+
+            // Assert
+            Assert.Equal(expected, actual);
+
+        }
+
+        [Fact]
         public void divide_ValidNumbers_ReturnsQuotient()
         {
             //Arrange
