@@ -11,7 +11,7 @@ namespace CalculatorWeb.Models
         public class CurrencyApiResponse
         {
             [JsonPropertyName("data")]
-            public Dictionary<string, CurrencyData> Data { get; set; };
+            public Dictionary<string, CurrencyData> Data { get; set; }
         }
 
         public class CurrencyData

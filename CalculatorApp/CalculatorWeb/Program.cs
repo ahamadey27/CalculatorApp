@@ -3,24 +3,8 @@ using CalculatorWeb.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<CalculatorWeb.Services.ICalculatorService, CalculatorWeb.Services.CalculatorService>(); // Register the calculator service
-builder.Services.AddHttpClient<CalculatorWeb.Services.ICurrencyApiService, CalculatorWeb.Services.CurrencyApiService>(); // Register HttpClient for the currency service
-
-public IndexModel(ICalculatorService calculatorService, ICurrencyApiService currencyApiService)
-{
-    _calculatorService = calculatorService;
-    _currencyApiService = currencyApiService;
-}
-
-public async Task OnGetAsync() // Made OnGet asynchronous to await API call
-{
-    var currencyData = await _currencyApiService.GetCurrenciesAsync();
-    // Transform the fetched data into a SelectList suitable for the dropdown
-    Currencies = new SelectList(currencyData.OrderBy(c => c.Name), nameof(Models.CurrencyData.Code), nameof(Models.CurrencyData.Name));
-}
-//provides new CalculatorService instance whenever ICalculatorService is requested
-builder.Services.AddScoped<ICalculatorService, CalculatorService>(); 
-
+builder.Services.AddScoped<ICalculatorService, CalculatorService>(); // Register the calculator service
+builder.Services.AddHttpClient<ICurrencyApiService, CurrencyApiService>(); // Register HttpClient for the currency service
 
 var app = builder.Build();
 
