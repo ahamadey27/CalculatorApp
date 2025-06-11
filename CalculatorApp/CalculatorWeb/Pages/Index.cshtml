@@ -34,8 +34,10 @@
             <option value="">Select a currency</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Calculate</button>
-    <button type="submit" name="action" value="convert" class="btn btn-secondary ml-2">Convert</button>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Calculate</button>
+        <button type="submit" name="action" value="convert" class="btn btn-secondary ml-2">Convert</button>
+    </div>
 </form>
 
 @if (Model.Result.HasValue)
