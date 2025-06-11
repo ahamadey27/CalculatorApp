@@ -45,5 +45,16 @@ namespace CalculatorWeb.Tests.Services
             Assert.Equal(expected, actual);
 
         }
+
+        [Fact]
+        public void Dvide_ByZero_ThrowsDivdeByZeroExceptionMethod()
+        {
+            //Arrange
+            decimal num1 = 10m;
+            decimal num2 = 0m;
+
+            //Act & Assert
+            Assert.Throws<DivideByZeroException>(() => calculatorService.Divide(num1, num2));
+        }
     }
 }
