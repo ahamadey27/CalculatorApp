@@ -1,7 +1,10 @@
+using CalculatorWeb.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+//provides new CalculatorService instance whenever ICalculatorService is requested
+builder.Services.AddScoped<ICalculatorService, CalculatorService>(); 
+
 
 var app = builder.Build();
 
