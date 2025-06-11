@@ -9,7 +9,6 @@ namespace CalculatorWeb.Models
 {
     public interface ICurrencyApiService
     {
-        Task GetCurrenciesAsync();
-        Task<IEnumerable<Currency.CurrencyData>> GetCurrencyAsync();
+        Task<IEnumerable<Currency.CurrencyData>> GetCurrenciesAsync();
     }
 }

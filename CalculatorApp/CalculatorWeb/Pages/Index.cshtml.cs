@@ -47,14 +47,14 @@ namespace CalculatorWeb.Pages
         {
             // Load currencies on page load (Phase 3)
             var currencyData = await _currencyApiService.GetCurrenciesAsync();
-            Currencies = new SelectList(currencyData.OrderBy(c => c.Name), nameof(Models.CurrencyData.Code), nameof(Models.CurrencyData.Name));
+            Currencies = new SelectList(currencyData.OrderBy(c => c.Name), nameof(CalculatorWeb.Models.Currency.CurrencyData.Code), nameof(CalculatorWeb.Models.Currency.CurrencyData.Name));
         }
 
-        public void OnPost()
+        public async Task OnPostAsync()
         {
             // Re-populate currencies for the POST request to keep dropdown populated
-            // This is important because OnGetAsync is not called on POST
-            OnGetAsync().Wait(); // Synchronously wait for currencies to load for simplicity in this example
+            var currencyData = await _currencyApiService.GetCurrenciesAsync();
+            Currencies = new SelectList(currencyData.OrderBy(c => c.Name), nameof(CalculatorWeb.Models.Currency.CurrencyData.Code), nameof(CalculatorWeb.Models.Currency.CurrencyData.Name));
 
             if (!ModelState.IsValid)
             {
