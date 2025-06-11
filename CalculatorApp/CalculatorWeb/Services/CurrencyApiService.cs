@@ -25,23 +25,30 @@ namespace CalculatorWeb.Services
         {
             try
             {
-                // Request to Freecurrencyapi.com's /currencies endpoint
-                var response = await _httpClient.GetFromJsonAsync<CalculatorWeb.Models.Currency.CurrencyApiResponse>($"currencies?apikey={_apiKey}");
+                // Log the raw JSON response for debugging
+                var rawResponse = await _httpClient.GetStringAsync($"currencies?apikey={_apiKey}");
+                Console.WriteLine("Raw API response: " + rawResponse);
+
+                // Try to deserialize
+                var response = System.Text.Json.JsonSerializer.Deserialize<CalculatorWeb.Models.Currency.CurrencyApiResponse>(rawResponse);
 
                 if (response?.Data != null)
                 {
                     return response.Data.Values; // Return the collection of CurrencyData objects
                 }
+                Console.WriteLine("Deserialization failed or no data found.");
                 return new List<CalculatorWeb.Models.Currency.CurrencyData>(); // Return empty list on no data
             }
             catch (HttpRequestException ex)
             {
-                // Log the exception (e.g., using ILogger) for debugging purposes
                 Console.WriteLine($"API request failed: {ex.Message}");
-                // For a robust application, consider a fallback mechanism or a cached response
                 return new List<CalculatorWeb.Models.Currency.CurrencyData>();
             }
-
+            catch (System.Text.Json.JsonException ex)
+            {
+                Console.WriteLine($"JSON deserialization failed: {ex.Message}");
+                return new List<CalculatorWeb.Models.Currency.CurrencyData>();
+            }
         }
     }
 }
