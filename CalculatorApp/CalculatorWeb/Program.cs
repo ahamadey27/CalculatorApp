@@ -1,6 +1,9 @@
 using CalculatorWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+builder.Services.AddTransient<CalculatorWeb.Services.ICalculatorService, CalculatorWeb.Services.CalculatorService>(); // Register the calculator service
+//...
 
 //provides new CalculatorService instance whenever ICalculatorService is requested
 builder.Services.AddScoped<ICalculatorService, CalculatorService>(); 
