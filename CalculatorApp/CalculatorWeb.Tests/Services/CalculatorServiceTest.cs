@@ -15,16 +15,18 @@ namespace CalculatorWeb.Tests.Services
             calculatorService = new CalculatorService(); // Instantiating the concrete service for unit tests
         }
 
+
+
         [Fact]
-        public void Add_TwoNumber_ReturnCorrectSum()
+        public void Subtract_TwoNumber_ReturnCorrectDifference()
         {
             //Arrange
-            decimal num1 = 5.0m;
-            decimal num2 = 3.2m;
-            decimal expected = 8.2m;
+            decimal num1 = 2.0m;
+            decimal num2 = 10.0m;
+            decimal expected = -8.0m;
 
             //Act
-            decimal actual = calculatorService.Add(num1, num2);
+            decimal actual = calculatorService.Subtract(num1, num2);
 
             //Assert
             Assert.Equal(expected, actual);
