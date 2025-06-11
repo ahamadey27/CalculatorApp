@@ -25,18 +25,13 @@ namespace CalculatorWeb.Services
         {
             try
             {
-                // Log the raw JSON response for debugging
                 var rawResponse = await _httpClient.GetStringAsync($"currencies?apikey={_apiKey}");
-                Console.WriteLine("Raw API response: " + rawResponse);
-
-                // Try to deserialize
                 var response = System.Text.Json.JsonSerializer.Deserialize<CalculatorWeb.Models.Currency.CurrencyApiResponse>(rawResponse);
 
                 if (response?.Data != null)
                 {
                     return response.Data.Values; // Return the collection of CurrencyData objects
                 }
-                Console.WriteLine("Deserialization failed or no data found.");
                 return new List<CalculatorWeb.Models.Currency.CurrencyData>(); // Return empty list on no data
             }
             catch (HttpRequestException ex)
