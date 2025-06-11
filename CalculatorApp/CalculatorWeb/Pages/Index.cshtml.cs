@@ -6,6 +6,7 @@ using CalculatorWeb.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CalculatorWeb.Models;
 
 namespace CalculatorWeb.Pages
 {
