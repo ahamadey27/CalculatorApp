@@ -17,7 +17,7 @@ namespace CalculatorWeb.Services
         public CurrencyApiService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _apiKey = configuration["fca_live_r40OrZMpUpkKhfY7jfvQ0MpPVbwKA6i0VziWSH4B"]; // Retrieve API key from configuration
+            _apiKey = configuration["FreeCurrencyApi:ApiKey"]; // Retrieve API key from configuration
             _httpClient.BaseAddress = new Uri("https://api.freecurrencyapi.com/v1/"); // Base URL for Freecurrencyapi.com
         }
 
