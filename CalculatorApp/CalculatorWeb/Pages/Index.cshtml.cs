@@ -14,6 +14,7 @@ namespace CalculatorWeb.Pages
     {
         private readonly ICalculatorService _calculatorService;
         private readonly ICurrencyApiService _currencyApiService; // To be injected in Phase 3
+        private CurrencyApiService? _currencyApiServiceImpl;
 
         [BindProperty]
         public decimal? FirstNumber { get; set; }
@@ -39,6 +40,7 @@ namespace CalculatorWeb.Pages
         {
             _calculatorService = calculatorService;
             _currencyApiService = currencyApiService;
+            _currencyApiServiceImpl = currencyApiService as CurrencyApiService;
         }
 
         public async Task OnGetAsync() // Made async for currency loading
@@ -54,6 +56,8 @@ namespace CalculatorWeb.Pages
             var currencyData = await _currencyApiService.GetCurrenciesAsync();
             Currencies = new SelectList(currencyData.OrderBy(c => c.Name), nameof(CalculatorWeb.Models.Currency.CurrencyData.Code), nameof(CalculatorWeb.Models.Currency.CurrencyData.Name));
 
+            var action = Request.Form["action"].ToString();
+
             if (!ModelState.IsValid)
             {
                 ErrorMessage = "Please correct the input errors.";
@@ -63,6 +67,29 @@ namespace CalculatorWeb.Pages
             if (!FirstNumber.HasValue || !SecondNumber.HasValue)
             {
                 ErrorMessage = "Both numbers are required.";
+                return;
+            }
+
+            if (action == "convert")
+            {
+                if (Result.HasValue && !string.IsNullOrEmpty(SelectedCurrency) && _currencyApiServiceImpl != null)
+                {
+                    // Use the CurrencyApiService's HttpClient and ApiKey via a new method
+                    var rate = await _currencyApiServiceImpl.GetRateForCurrencyAsync(SelectedCurrency);
+                    if (rate.HasValue)
+                    {
+                        Result = Result * rate.Value;
+                        ErrorMessage = string.Empty;
+                    }
+                    else
+                    {
+                        ErrorMessage = "Could not fetch conversion rate.";
+                    }
+                }
+                else
+                {
+                    ErrorMessage = "No result to convert or no currency selected.";
+                }
                 return;
             }
 
@@ -76,27 +103,6 @@ namespace CalculatorWeb.Pages
                     "/" => _calculatorService.Divide(FirstNumber.Value, SecondNumber.Value),
                     _ => throw new InvalidOperationException("Invalid operator selected.")
                 };
-
-                // Currency conversion logic
-                if (!string.IsNullOrEmpty(SelectedCurrency) && Result.HasValue)
-                {
-                    var selected = currencyData.FirstOrDefault(c => c.Code == SelectedCurrency);
-                    if (selected != null && selected.Code != "USD") // Assuming base is USD
-                    {
-                        // Convert from USD to selected currency
-                        // If you want to show the value in the selected currency, you need the rate
-                        // For this API, 1 USD = selected currency's value in USD
-                        // So, to convert USD to selected currency: Result / (1 USD in selected currency)
-                        Result = Result / 1m; // Default, in case rate is not found
-                        if (selected != null)
-                        {
-                            // If you want to convert from USD to selected currency, you need the rate
-                            // But CurrencyData does not have a rate, so you need to fetch rates if needed
-                            // For now, just show the result as is, or extend the model to include rates
-                        }
-                    }
-                }
-
                 ErrorMessage = string.Empty; // Clear any previous errors on success
             }
             catch (DivideByZeroException ex)

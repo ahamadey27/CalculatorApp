@@ -45,5 +45,25 @@ namespace CalculatorWeb.Services
                 return new List<CalculatorWeb.Models.Currency.CurrencyData>();
             }
         }
+
+        // Fetch the latest exchange rate for a given currency code (relative to USD)
+        public async Task<decimal?> GetRateForCurrencyAsync(string currencyCode)
+        {
+            try
+            {
+                var rawResponse = await _httpClient.GetStringAsync($"latest?apikey={_apiKey}&currencies={currencyCode}");
+                var doc = System.Text.Json.JsonDocument.Parse(rawResponse);
+                if (doc.RootElement.TryGetProperty("data", out var dataElem) &&
+                    dataElem.TryGetProperty(currencyCode, out var rateElem))
+                {
+                    return rateElem.GetDecimal();
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
