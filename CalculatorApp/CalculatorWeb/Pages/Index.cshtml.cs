@@ -104,7 +104,7 @@ namespace CalculatorWeb.Pages
                     var rate = await _currencyApiServiceImpl.GetRateForCurrencyAsync(SelectedCurrency);
                     if (rate.HasValue)
                     {
-                        Result = Result * rate.Value;
+                        Result = Math.Round(Result.Value * rate.Value, 2); // Round to 2 decimal places
                         ErrorMessage = string.Empty;
                     }
                     else
@@ -116,6 +116,12 @@ namespace CalculatorWeb.Pages
                 {
                     ErrorMessage = "No result to convert or no currency selected.";
                 }
+            }
+            else
+            {
+                // Always round the result for normal calculation as well
+                if (Result.HasValue)
+                    Result = Math.Round(Result.Value, 2);
             }
         }
     }
