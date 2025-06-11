@@ -9,7 +9,8 @@ namespace CalculatorWeb.Services
     {
         public decimal Add(decimal num1, decimal num2)
         {
-            throw new NotImplementedException("Add method not implemented."); // This will cause the initial test to fail
+            return num1 + num2;
+            //throw new NotImplementedException("Add method not implemented."); // This will cause the initial test to fail
         }
 
         public decimal Subtract(decimal num1, decimal num2)
@@ -24,8 +25,8 @@ namespace CalculatorWeb.Services
 
         public decimal Divide(decimal num1, decimal num2)
         {
-            throw new NotImplementedException("Divide method not implemented.");
+            return num1 / num2;
+            //throw new NotImplementedException("Divide method not implemented.");
         }
-
     }
 }
