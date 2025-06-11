@@ -15,27 +15,25 @@ namespace CalculatorWeb.Pages
         private readonly ICalculatorService _calculatorService;
         private readonly ICurrencyApiService _currencyApiService; // To be injected in Phase 3
 
-
-
-
+        [BindProperty]
         public decimal? FirstNumber { get; set; }
 
-
-
+        [BindProperty]
         public string Operator { get; set; } = "+"; // Default operator
 
-
-
-
+        [BindProperty]
         public decimal? SecondNumber { get; set; }
 
+        [BindProperty]
+        public string? SelectedCurrency { get; set; }
+
+        public SelectList? Currencies { get; set; }
+
         public decimal? Result { get; set; }
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
 
         // Properties for currency dropdown (Phase 3)
-        public SelectList Currencies { get; set; }
-
-        public string SelectedCurrency { get; set; }
+        
 
         public IndexModel(ICalculatorService calculatorService, ICurrencyApiService currencyApiService)
         {
