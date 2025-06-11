@@ -76,6 +76,27 @@ namespace CalculatorWeb.Pages
                     "/" => _calculatorService.Divide(FirstNumber.Value, SecondNumber.Value),
                     _ => throw new InvalidOperationException("Invalid operator selected.")
                 };
+
+                // Currency conversion logic
+                if (!string.IsNullOrEmpty(SelectedCurrency) && Result.HasValue)
+                {
+                    var selected = currencyData.FirstOrDefault(c => c.Code == SelectedCurrency);
+                    if (selected != null && selected.Code != "USD") // Assuming base is USD
+                    {
+                        // Convert from USD to selected currency
+                        // If you want to show the value in the selected currency, you need the rate
+                        // For this API, 1 USD = selected currency's value in USD
+                        // So, to convert USD to selected currency: Result / (1 USD in selected currency)
+                        Result = Result / 1m; // Default, in case rate is not found
+                        if (selected != null)
+                        {
+                            // If you want to convert from USD to selected currency, you need the rate
+                            // But CurrencyData does not have a rate, so you need to fetch rates if needed
+                            // For now, just show the result as is, or extend the model to include rates
+                        }
+                    }
+                }
+
                 ErrorMessage = string.Empty; // Clear any previous errors on success
             }
             catch (DivideByZeroException ex)
