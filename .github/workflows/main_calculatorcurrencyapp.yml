@@ -23,6 +23,11 @@ jobs:
         with:
           dotnet-version: 'v9.0'
 
+      - name: List repository files (debug)
+        run: |
+          dir
+          dir CalculatorApp
+
       - name: Restore dependencies
         run: dotnet restore CalculatorApp/CalculatorApp.sln
 
