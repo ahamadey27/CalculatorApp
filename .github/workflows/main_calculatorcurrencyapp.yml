@@ -24,13 +24,13 @@ jobs:
           dotnet-version: 'v9.0'
 
       - name: Restore dependencies
-        run: dotnet restore CalculatorApp.sln
+        run: dotnet restore CalculatorApp/CalculatorApp.sln
 
       - name: Build
-        run: dotnet build CalculatorApp.sln --configuration Release --no-restore
+        run: dotnet build CalculatorApp/CalculatorApp.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test CalculatorApp.sln --no-restore --verbosity normal
+        run: dotnet test CalculatorApp/CalculatorApp.sln --no-restore --verbosity normal
 
       - name: dotnet publish
         run: dotnet publish CalculatorApp/CalculatorWeb/CalculatorWeb.csproj -c Release -o ./published_app
