@@ -46,7 +46,7 @@ namespace CalculatorWeb.Services
             }
         }
 
-        // Fetch the latest exchange rate for a given currency code (relative to USD)
+        // Fetch the latest exchange rate for a given currency code (relative to USD currency)
         public async Task<decimal?> GetRateForCurrencyAsync(string currencyCode)
         {
             try
